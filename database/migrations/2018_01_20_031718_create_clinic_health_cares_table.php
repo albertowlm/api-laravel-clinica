@@ -19,6 +19,8 @@ class CreateClinicHealthCaresTable extends Migration
             $table->foreign('clinic_id')->references('id')->on('clinics');
             $table->integer('health_care_id')->unsigned();
             $table->foreign('health_care_id')->references('id')->on('health_cares');
+            $table->integer('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
 		});
 	}

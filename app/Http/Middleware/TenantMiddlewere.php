@@ -3,7 +3,7 @@
 namespace Clin\Http\Middleware;
 
 use Closure;
-use Tymon\JWTAuth\JWTAuth;
+
 
 class TenantMiddlewere
 {

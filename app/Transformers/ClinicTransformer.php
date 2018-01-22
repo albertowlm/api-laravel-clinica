@@ -22,11 +22,14 @@ class ClinicTransformer extends TransformerAbstract
     {
         return [
             'id'         => (int) $model->id,
-
+            'cnpj'       => $model->cnpj,
+            'name'       => $model->name,
             /* place your other model properties here */
 
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at
         ];
     }
+
+
 }

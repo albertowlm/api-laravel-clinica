@@ -1,0 +1,39 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "API Controle de Plano da Sa\u00fade por Cl\u00ednica",
+        "version": "0.0.1"
+    },
+    "paths": {
+        "/api/login": {
+            "post": {
+                "summary": "Requisitar token JWT",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "properties": {
+                                "email": {
+                                    "description": "Requisitar token JWT",
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "description": "Requisitar token JWT",
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token JWT"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {}
+}

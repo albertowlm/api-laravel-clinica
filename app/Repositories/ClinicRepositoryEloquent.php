@@ -2,6 +2,7 @@
 
 namespace Clin\Repositories;
 
+use Clin\Presenters\ClinicPresenter;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Clin\Models\Clinic;
@@ -31,6 +32,12 @@ class ClinicRepositoryEloquent extends BaseRepository implements ClinicRepositor
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+    public function presenter()
+    {
+        return ClinicPresenter::class;
+    }
+
 
     public function applyMultitenancy()
     {

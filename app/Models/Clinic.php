@@ -16,4 +16,10 @@ class Clinic extends Model implements Transformable
         'cnpj','name','user_id'
     ];
 
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

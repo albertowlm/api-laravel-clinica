@@ -2,6 +2,8 @@
 
 namespace Clin\Repositories;
 
+use Clin\Models\Clinic;
+use Clin\Presenters\ClinicHealthCarePresenter;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Clin\Models\ClinicHealthCare;
@@ -31,8 +33,16 @@ class ClinicHealthCareRepositoryEloquent extends BaseRepository implements Clini
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+    public function presenter()
+    {
+        return ClinicHealthCarePresenter::class;
+    }
+
     public function applyMultitenancy()
     {
         ClinicHealthCare::clearBootedModels();
     }
+
+
 }
