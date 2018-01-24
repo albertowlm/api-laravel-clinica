@@ -10,12 +10,10 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+Route::get('', 'Web\LoginController@index');
 
-Route::get('/', function () {
 
 
-    return view('welcome');
-});
 
 Route::group(['prefix' => 'clinic'], function (){
     Route::get('', 'Web\ClinicsController@index')->name('clinic/list');
