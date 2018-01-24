@@ -26,7 +26,6 @@ class ClinicHealthCareCreateRequest extends FormRequest
         return [
             'health_care_id' => 'required|exists:health_cares,id',
             'clinic_id' => 'required|exists:clinics,id',
-            'user_id' => 'required|exists:users,id'
 
 
         ];

@@ -13,13 +13,23 @@ class Clinic extends Model implements Transformable
     use BelongsToTenants; //Funcionalidade MultTenans
 
     protected $fillable = [
-        'cnpj','name','user_id'
+        'cnpj',
+        'name',
+        'user_id'
     ];
-
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
+    public function healthCares()
+    {
+        return $this->belongsToMany(
+            HealthCare::class,
+            'clinic_health_cares',
+            'clinic_id',
+            'health_care_id'
+        );
+    }
 }

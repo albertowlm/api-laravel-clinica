@@ -25,8 +25,8 @@ class ClinicCreateRequest extends FormRequest
     {
         return [
             'cnpj' => 'required|unique:clinics|min:14|max:14',
-            'name' => 'required|max:255',
-            'user_id' => 'required|exists:users,id'
+            'name' => 'required|max:255'
+            //'user_id' => 'required|exists:users,id'
         ];
     }
 }

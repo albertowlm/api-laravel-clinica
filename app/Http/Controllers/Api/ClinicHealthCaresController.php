@@ -7,6 +7,8 @@ use Clin\Http\Controllers\Controller;
 use Clin\Http\Requests\ClinicHealthCareCreateRequest;
 use Clin\Http\Requests\ClinicHealthCareUpdateRequest;
 use Clin\Repositories\ClinicHealthCareRepository;
+use Clin\Criterias\ClinicIdCriteria;
+use Illuminate\Http\Request;
 
 
 class ClinicHealthCaresController extends Controller
@@ -31,9 +33,11 @@ class ClinicHealthCaresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
+        $id         = $request->input('clinic_id');
+        $clinicIdCriteria = new ClinicIdCriteria($id);
+        $this->repository->pushCriteria($clinicIdCriteria);
 
         return $this->repository->all();
     }

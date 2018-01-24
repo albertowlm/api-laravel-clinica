@@ -77,7 +77,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'pt-BR',
 
     /*
     |--------------------------------------------------------------------------
@@ -171,6 +171,9 @@ return [
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
         HipsterJazzbo\Landlord\LandlordServiceProvider::class,
         L5Swagger\L5SwaggerServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
+        Barryvdh\Debugbar\ServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -230,8 +233,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'JWTAuth' => \Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => \Tymon\JWTAuth\Facades\JWTFactory::class,
-        'Landlord' => \HipsterJazzbo\Landlord\Facades\Landlord::class
-
+        'Landlord' => \HipsterJazzbo\Landlord\Facades\Landlord::class,
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
     ],
 
 ];

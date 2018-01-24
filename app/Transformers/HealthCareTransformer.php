@@ -11,6 +11,7 @@ use Clin\Models\HealthCare;
  */
 class HealthCareTransformer extends TransformerAbstract
 {
+    protected $availableIncludes = ['clinics'];
 
     /**
      * Transform the \HealthCare entity
@@ -25,10 +26,17 @@ class HealthCareTransformer extends TransformerAbstract
             'name'       => $model->name,
             'logo'       => $model->logo,
             'status'       => $model->status,
-            /* place your other model properties here */
-
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at
         ];
+    }
+
+    public function includeClinics(HealthCare $model)
+    {
+
+        if (isset($model->clinics) && !empty($model->clinics)) {
+            return $this->collection($model->clinics, new ClinicTransformer());
+        }
+        return null;
     }
 }

@@ -2,11 +2,18 @@
 
 namespace Clin\Http\Controllers\Api;
 
+use Clin\Criterias\NameCriteria;
+use Clin\Criterias\StatusCriteria;
 use Clin\Http\Controllers\Controller;
 
 use Clin\Http\Requests\HealthCareCreateRequest;
+use Clin\Http\Requests\HealthCareDeleteRequest;
 use Clin\Http\Requests\HealthCareUpdateRequest;
 use Clin\Repositories\HealthCareRepository;
+use Clin\Services\HealthCare\DeleteService;
+use Clin\Services\HealthCare\StoreService;
+use Clin\Services\HealthCare\UpdateService;
+use Illuminate\Http\Request;
 
 
 class HealthCaresController extends Controller
@@ -21,8 +28,6 @@ class HealthCaresController extends Controller
     public function __construct(HealthCareRepository $repository)
     {
         $this->repository = $repository;
-        $this->repository->applyMultitenancy();
-
     }
 
 
@@ -31,9 +36,14 @@ class HealthCaresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
+        $status = $request->input('status');
+        $this->repository->pushCriteria(new StatusCriteria($status));
+
+        $name = $request->input('name');
+        $this->repository->pushCriteria(new NameCriteria($name));
 
         return $this->repository->all();
     }
@@ -45,10 +55,18 @@ class HealthCaresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(HealthCareCreateRequest $request)
+    public function store(HealthCareCreateRequest $request, StoreService $service)
     {
-        $healthCare = $this->repository->create($request->all());
-        return response()->json($healthCare,201);
+        try {
+            $healthCare = $service->store(
+                $request->input('name'),
+                $request->input('logo'),
+                $request->input('status')
+            );
+            return response()->json($healthCare, 201);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Exception: ' . $e->getMessage()], 500);
+        }
     }
 
 
@@ -62,7 +80,6 @@ class HealthCaresController extends Controller
     public function show($id)
     {
         return $this->repository->find($id);
-
     }
 
 
@@ -70,14 +87,24 @@ class HealthCaresController extends Controller
      * Update the specified resource in storage.
      *
      * @param  HealthCareUpdateRequest $request
+     * @param UpdateService $service
      * @param  string $id
-     *
      * @return Response
      */
-    public function update(HealthCareUpdateRequest $request, $id)
+    public function update($id ,HealthCareUpdateRequest $request, UpdateService $service )
     {
-            $healthCare = $this->repository->update($request->all(),$id);
-            return response()->json($healthCare,200);
+
+        try {
+            $healthCare = $service->update(
+                $id,
+                $request->input('name'),
+                $request->input('logo'),
+                $request->input('status')
+            );
+            return response()->json($healthCare, 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Exception: ' . $e->getMessage()], 500);
+        }
 
     }
 
@@ -89,14 +116,17 @@ class HealthCaresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id,DeleteService $service, HealthCareDeleteRequest $request)
     {
-        $deleted = $this->repository->delete($id);
+        try {
+            $deleted = $service->delete($id);
 
-        if ($deleted){
-            return response()->json([],204);
+            if ($deleted) {
+                return response()->json([], 204);
+            }
+            return response()->json(['error' => 'Resource can not be deleted'], 500);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Exception: ' . $e->getMessage()], 500);
         }
-        return response()->json(['error' => 'Resource can not be deleted'],500);
-
     }
 }

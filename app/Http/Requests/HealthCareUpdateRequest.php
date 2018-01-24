@@ -24,7 +24,7 @@ class HealthCareUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:health_cares|max:255',
+            'name' => 'required|max:255',
             'logo' => 'required|max:255',
             'status' => 'required'
         ];

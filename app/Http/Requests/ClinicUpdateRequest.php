@@ -24,9 +24,8 @@ class ClinicUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'cnpj' => 'required|unique:clinics|min:14|max:14',
-            'name' => 'required|max:255',
-            'user_id' => 'required|exists:users,id'
+            'cnpj' => 'min:14|max:14',
+            'name' => 'max:255'
         ];
     }
 }

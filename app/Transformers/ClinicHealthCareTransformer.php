@@ -2,7 +2,8 @@
 
 namespace Clin\Transformers;
 
-use Clin\Models\Clinic;
+
+
 use League\Fractal\TransformerAbstract;
 use Clin\Models\ClinicHealthCare;
 
@@ -13,7 +14,7 @@ use Clin\Models\ClinicHealthCare;
 class ClinicHealthCareTransformer extends TransformerAbstract
 {
 
-    protected $defaultIncludes = ['clinic','healthCare'];
+    protected $defaultIncludes = ['health_cares'];
 
     /**
      * Transform the \ClinicHealthCare entity
@@ -23,22 +24,27 @@ class ClinicHealthCareTransformer extends TransformerAbstract
      */
     public function transform(ClinicHealthCare $model)
     {
+
+
         return [
             'id'         => (int) $model->id,
-            /* place your other model properties here */
-
+            'clinic_id'       => $model->clinic_id,
+            'health_care_id'       => $model->health_care_id,
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at
         ];
     }
 
-    public function includeClinic(ClinicHealthCare $clinicHealthCare)
+
+//    public function includeClinic(ClinicHealthCare $model)
+//    {
+//        return $this->item($model->clinic, new ClinicTransformer());
+//    }
+
+    public function includeHealthCares(ClinicHealthCare $model)
     {
-        return $this->item($clinicHealthCare->clinic, new ClinicTransformer());
+        return $this->item($model->healthCare, new HealthCareTransformer());
     }
 
-    public function includeHealthCare(ClinicHealthCare $clinicHealthCare)
-    {
-        return $this->item($clinicHealthCare->healthCare, new HealthCareTransformer());
-    }
+
 }

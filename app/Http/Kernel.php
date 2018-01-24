@@ -7,6 +7,8 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
+
+
     /**
      * The application's global HTTP middleware stack.
      *
@@ -16,6 +18,8 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \Barryvdh\Cors\HandleCors::class,
+        \Clin\Http\Middleware\ProfileJsonResponse::class,
     ];
 
     /**
@@ -46,6 +50,7 @@ class Kernel extends HttpKernel
      *
      * @var array
      */
+
     protected $routeMiddleware = [
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
@@ -55,5 +60,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'jwt.auth' => \Tymon\JWTAuth\Middleware\GetUserFromToken::class,
         'tenant' => \Clin\Http\Middleware\TenantMiddlewere::class,
+        'cors' => \Barryvdh\Cors\HandleCors::class,
     ];
 }
