@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label" for="logo">Logo</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="logo" id="logo" placeholder="Logo da Plano">
+                        <input type="file"  name="logo" id="logo" placeholder="Logo da Plano">
                     </div>
                 </div>
 
@@ -46,28 +46,45 @@
     </div>
 
     <script type="text/javascript">
-
-
+        $(document).ready(function(){
             tokenId = localStorage.getItem('token');
             token = 'Bearer '+tokenId;
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    'Authorization': token
+                    'Authorization': token,
+                    accept: "application/json",
+                    contentType: "application/json"
+
                 }
             });
 
-
             $('#btn-submit').click(function(){
-                var status = 0;
+                var img = document.getElementById("logo").files[0];
                 var id = $("#id").val();
-                if($('#status').is( ':checked' )){
-                    status = 1
+                var fd = new FormData();
+                console.log('aaa');
+
+                var statusForm = $("#status");
+
+
+                var status = 0;
+                if(statusForm.is( ':checked' )){
+                    status = 1;
                 }
+
+                fd.append("name",$("#name").val());
+                fd.append("logo",img);
+                fd.append("status",status);
+
+
                 $.ajax({
                     url: '../api/health-care/'+id,
                     type: 'PUT',
-                    data: {name: $("#name").val(), logo: $('#logo').val(), status: status },
+                    processData: false,
+                    mimeType: 'multipart/form-data',
+                    data:fd,
+                    dataType: 'json',
                     success: function () {
 //                    $('#valid').empty();
 //                    $('#error-messages').prepend('<p> Clinica Incluida </p>');
@@ -78,7 +95,9 @@
                         $('#error-messages').prepend('<p>' + response.responseText + '</p>');
 
                     }
+
                 });
+
             });
 
         load = function (id) {
@@ -94,7 +113,7 @@
                     }
                     $("#id").val(response.data.id);
                     $("#name").val(response.data.name);
-                    $("#logo").val(response.data.logo);
+//                    $("#logo").val('images/'+response.data.logo);
                     $("#status")[0].checked = status;
 
                 },
@@ -105,7 +124,7 @@
             });
         };
         load(localStorage.getItem('id_health_care'));
-
+        });
 
 
 

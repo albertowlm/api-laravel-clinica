@@ -25,7 +25,7 @@ class HealthCareUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required|max:255',
-            'logo' => 'required|max:255',
+            'logo' => 'required',
             'status' => 'required'
         ];
     }

@@ -6,7 +6,7 @@ use Faker\Generator as Faker;
 $factory->define(Clin\Models\HealthCare::class, function (Faker $faker) {
     return [
         'name' => $faker->domainName,
-        'logo' => $faker->md5,
+        'logo' => '1516935432.jpg',
         'status' => $faker->boolean
     ];
 });

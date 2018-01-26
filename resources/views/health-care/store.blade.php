@@ -19,7 +19,7 @@
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="logo">Logo</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" name="logo" id="logo" placeholder="Logo da Plano">
+                    <input type="file"  name="logo" id="logo" placeholder="Logo da Plano">
                 </div>
             </div>
 
@@ -51,14 +51,31 @@
         });
 
             $('#btn-submit').click(function(){
+                var img = document.getElementById("logo").files[0];
+                var fd = new FormData();
+                console.log('aaa');
+
+                var statusForm = $("#status");
+
+
                 var status = 0;
-                if($('#status').is( ':checked' )){
-                    status = 1
+                if(statusForm.is( ':checked' )){
+                    status = 1;
                 }
+
+                fd.append("name",$("#name").val());
+                fd.append("logo",img);
+                fd.append("status",status);
+
+
                 $.ajax({
                     url: '../api/health-care',
                     type: 'POST',
-                    data: {name: $("#name").val(), logo: $('#logo').val(), status: status },
+                    processData: false,
+                    contentType: false,
+                    mimeType: 'multipart/form-data',
+                    data:fd,
+                    dataType: 'json',
                     success: function () {
 //                    $('#valid').empty();
 //                    $('#error-messages').prepend('<p> Clinica Incluida </p>');
@@ -69,7 +86,33 @@
                         $('#error-messages').prepend('<p>' + response.responseText + '</p>');
 
                     }
+
                 });
+
+
+              /*
+
+               var settings = {
+               "async": true,
+               "crossDomain": true,
+               "url": "http://localhost:8000/api/health-care",
+               "method": "POST",
+               "headers": {
+               "accept": "application/json",
+               "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImlzcyI6Imh0dHA6XC9cL2xvY2FsaG9zdDo4MDAwXC9hcGlcL2xvZ2luIiwiaWF0IjoxNTE2NzM3MzYzLCJleHAiOjE1MTY5NTMzNjMsIm5iZiI6MTUxNjczNzM2MywianRpIjoiMTBkNGZhOGVjZDcxNzEzYmJmODFjYmI5MjliZDExMjMifQ.PT4D_VLtpLfPbNFMqbD9Oo-D2rIWiGAj-70flnkNX2Y",
+               "cache-control": "no-cache",
+               "postman-token": "adc4b978-ccc9-71cb-93cf-3dd6a8401eac"
+               },
+               "processData": false,
+               "contentType": false,
+               "mimeType": "multipart/form-data",
+               "data": fd
+               }
+
+               $.ajax(settings).done(function (response) {
+               console.log(response);
+               });
+                */
             });
         });
 

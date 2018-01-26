@@ -66,7 +66,7 @@
                         $("#table").append(
                             "<tr class='tr'>" +
                                 "<td> " + response.data[i].name + " </td>" +
-                                "<td> " + response.data[i].logo + " </td>" +
+                                "<td><img style='width: 50px;height: 50px' src='images/" + response.data[i].logo + "'> </td>" +
                                 "<td> " + response.data[i].status + " </td>" +
                                 "<td>" +
                                     "<a href='#' class='btn btn-info btn-xs' onclick= edit(" + response.data[i].id + ");> <span class='glyphicon glyphicon-edit'></span> Edit </a>  " +

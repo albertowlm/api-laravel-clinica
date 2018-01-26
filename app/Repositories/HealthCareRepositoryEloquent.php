@@ -4,6 +4,7 @@ namespace Clin\Repositories;
 
 use Clin\Criterias\StatusCriteria;
 use Clin\Presenters\HealthCarePresenter;
+use Clin\Services\HealthCare\PhotoHealthCareService;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Clin\Models\HealthCare;
@@ -23,12 +24,7 @@ class HealthCareRepositoryEloquent extends BaseRepository implements HealthCareR
     {
         return HealthCare::class;
     }
-//    public function modelStatusEnabled()
-//    {
-//        $this->resetCriteria();
-//        $this->pushCriteria(new StatusCriteria(true));
-//        return $this->all();
-//    }
+
 
 
     /**
@@ -48,4 +44,5 @@ class HealthCareRepositoryEloquent extends BaseRepository implements HealthCareR
     {
         HealthCare::clearBootedModels();
     }
+
 }

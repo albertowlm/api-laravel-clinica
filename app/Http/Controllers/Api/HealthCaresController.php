@@ -9,11 +9,14 @@ use Clin\Http\Controllers\Controller;
 use Clin\Http\Requests\HealthCareCreateRequest;
 use Clin\Http\Requests\HealthCareDeleteRequest;
 use Clin\Http\Requests\HealthCareUpdateRequest;
+use Clin\Models\HealthCare;
+use Clin\Services\HealthCare\PhotoHealthCareService;
 use Clin\Repositories\HealthCareRepository;
 use Clin\Services\HealthCare\DeleteService;
 use Clin\Services\HealthCare\StoreService;
 use Clin\Services\HealthCare\UpdateService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 
 class HealthCaresController extends Controller
@@ -55,14 +58,35 @@ class HealthCaresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function store(HealthCareCreateRequest $request, StoreService $service)
-    {
+    public function store(
+        HealthCareCreateRequest $request,
+        StoreService $service
+    ) {
         try {
+
+          $this->validate($request, [
+                'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|dimensions:max_width=150,max_height=150',
+            ]);
+
+            $request->logo->getClientOriginalExtension();
+
+            $imageName = time().'.'.$request->logo->getClientOriginalExtension();
+//            dd($imageName);
+            $request->logo->move(public_path('images'), $imageName);
+
+
+
+
             $healthCare = $service->store(
                 $request->input('name'),
-                $request->input('logo'),
+                $imageName,
                 $request->input('status')
             );
+
+
+
+
+
             return response()->json($healthCare, 201);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Exception: ' . $e->getMessage()], 500);
@@ -91,14 +115,31 @@ class HealthCaresController extends Controller
      * @param  string $id
      * @return Response
      */
-    public function update($id ,HealthCareUpdateRequest $request, UpdateService $service )
+    public function update($id, HealthCareUpdateRequest $request, UpdateService $service)
     {
 
+        $healthCareModel = HealthCare::find($id);
+
         try {
+//            dd('aa');
+            $this->validate($request, [
+                'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|dimensions:max_width=150,max_height=150',
+            ]);
+
+            $request->logo->getClientOriginalExtension();
+
+            $imageName = time().'.'.$request->logo->getClientOriginalExtension();
+
+            $request->logo->move(public_path('images'), $imageName);
+
+
+            Storage::delete($healthCareModel->logo);
+
+
             $healthCare = $service->update(
                 $id,
                 $request->input('name'),
-                $request->input('logo'),
+                $imageName,
                 $request->input('status')
             );
             return response()->json($healthCare, 200);
@@ -116,7 +157,7 @@ class HealthCaresController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id,DeleteService $service, HealthCareDeleteRequest $request)
+    public function destroy($id, DeleteService $service, HealthCareDeleteRequest $request)
     {
         try {
             $deleted = $service->delete($id);

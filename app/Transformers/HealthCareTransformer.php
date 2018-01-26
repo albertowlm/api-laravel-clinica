@@ -2,8 +2,12 @@
 
 namespace Clin\Transformers;
 
+use Illuminate\Http\File;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
 use League\Fractal\TransformerAbstract;
 use Clin\Models\HealthCare;
+
 
 /**
  * Class HealthCareTransformer
@@ -21,10 +25,12 @@ class HealthCareTransformer extends TransformerAbstract
      */
     public function transform(HealthCare $model)
     {
+
+
         return [
             'id'         => (int) $model->id,
             'name'       => $model->name,
-            'logo'       => $model->logo,
+            'logo'       =>  $model->logo,
             'status'       => $model->status,
             'created_at' => $model->created_at,
             'updated_at' => $model->updated_at

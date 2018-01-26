@@ -25,7 +25,7 @@ class HealthCareCreateRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:health_cares|max:255',
-            'logo' => 'required|max:255',
+            'logo' => 'required',
             'status' => 'required|boolean'
         ];
     }
